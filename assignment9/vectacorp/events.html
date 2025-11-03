@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery Events Lab</title>
+</head>
+<body>
+  <h1>jQuery Events Practice</h1>
+
+  <section id="buttons">
+    <button id="btn-click">Click (.click)</button>
+    <button id="btn-bind">Click (.bind)</button>
+    <button id="btn-on">Click (.on)</button>
+    <button class="pair">Button A</button>
+    <button class="pair">Button B</button>
+  </section>
+
+  <section id="div-events">
+    <div id="box" style="margin-top:20px;background:#f2f2f2;"></div>
+    <span id="box-status" style="display:block;margin-top:10px;"></span>
+  </section>
+
+  <section id="link-sec" style="margin-top:20px;">
+    <a id="mm-link">Module Media</a>
+  </section>
+
+  <section id="resize-sec" style="margin-top:20px;">
+    <div id="size-readout" style="padding:10px;border:1px solid #ccc;"></div>
+  </section>
+
+  <section id="inputs" style="margin-top:20px;">
+    <input id="name" type="text" placeholder="Name">
+  </section>
+
+  <section id="form-sec" style="margin-top:20px;">
+    <form id="contact-form">
+      <input id="fname" type="text" placeholder="Name">
+      <input id="email" type="email" placeholder="Email">
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+  $(function() {
+    $('#btn-click').click(function() { alert('Button clicked (.click)'); });
+    $('#btn-bind').bind('click', function() { alert('Button clicked (.bind)'); });
+    $('#btn-on').on('click', function() { alert('Button clicked (.on)'); });
+    $('.pair').on('click', function() { alert('A pair button was clicked'); });
+
+    $('#box').css({ width: 400, height: 400 }).on({
+      click: function() { alert('Box clicked'); },
+      mouseenter: function() { alert('Mouse entered box'); },
+      mouseleave: function() { alert('Mouse left box'); }
+    });
+
+    $('#box').off().on({
+      click: function() { $('#box-status').text('Clicked'); },
+      mouseenter: function() { $('#box-status').text('Entered'); },
+      mouseleave: function() { $('#box-status').text('Left'); }
+    });
+
+    $('#mm-link').attr('href', 'https://modulemedia.com');
+    $('#mm-link').on('click', function(e) {
+      e.preventDefault();
+      $(this).css('color', 'red');
+      alert(e.target.nodeName);
+    });
+
+    function updateSize() {
+      $('#size-readout').text(window.innerWidth + ' x ' + window.innerHeight);
+    }
+    $(window).on('resize', updateSize);
+    updateSize();
+
+    $('#name').on('focus', function() { $(this).css('background', '#ddd'); })
+              .on('blur', function() { $(this).css('background', '#fff'); });
+
+    $('#contact-form').on('submit', function(e) {
+      e.preventDefault();
+      var n = $('#fname');
+      var em = $('#email');
+      var valid = true;
+      if (!n.val()) { valid = false; n.css('border', '1px solid red'); } else { n.css('border', '1px solid green'); }
+      if (!em.val()) { valid = false; em.css('border', '1px solid red'); } else { em.css('border', '1px solid green'); }
+      if (!valid) { alert('Fields are required'); }
+    });
+  });
+  </script>
+</body>
+</html>
+
+
